@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class Curso implements Serializable {
 
+
     private Integer id_curso;
     private String desc_curso;
     private Integer id_area;

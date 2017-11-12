@@ -33,6 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.garmadell.videoplayer.R.string.error_rest;
+import static com.garmadell.videoplayer.R.string.error_user_password;
 
 /**
  * Created by alex on 11/12/17.
@@ -120,9 +121,14 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                     if (response.code() == 200) {
-                        Log.i("entro en el if ","por aqui");
                         Boolean usuarioRegistrado = response.body();
+                        if (usuarioRegistrado){
                         llamaIntent();
+
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), getResources().getString(error_user_password), Toast.LENGTH_LONG).show();
+                        }
                     } else {
                         Log.i("Else", "Else");
                         Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();

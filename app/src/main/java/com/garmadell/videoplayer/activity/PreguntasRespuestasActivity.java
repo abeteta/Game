@@ -88,13 +88,18 @@ public class PreguntasRespuestasActivity extends AppCompatActivity {
                     lbl_respuesta2.setText(listadoPreguntas.get(indice).getRespuestas().get(1).getDesc_respuesta());
                     lbl_respuesta3.setText(listadoPreguntas.get(indice).getRespuestas().get(2).getDesc_respuesta());
 
-                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(30, 70);
-                    lp.setMarginStart(57);
-                    lp.setMargins(57,10,0,0);
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(getPx(30), getPx(70));
+                    //lp.setMarginStart(getPx(57));
+                    lp.setMargins(getPx(65),getPx(10),0,0);
                     miFicha.setLayoutParams(lp);
                 }
             });
         }
+
+    public int getPx(int dimensionDp) {
+        float density = getResources().getDisplayMetrics().density;
+        return (int) (dimensionDp * density + 0.5f);
+    }
 
     }
 

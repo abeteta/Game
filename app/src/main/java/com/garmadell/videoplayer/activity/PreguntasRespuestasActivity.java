@@ -96,10 +96,10 @@ public class PreguntasRespuestasActivity extends AppCompatActivity {
             });
         }
 
-    public int getPx(int dimensionDp) {
-        float density = getResources().getDisplayMetrics().density;
-        return (int) (dimensionDp * density + 0.5f);
-    }
+        public int getPx(int dimensionDp) {
+            float density = getResources().getDisplayMetrics().density;
+            return (int) (dimensionDp * density + 0.5f);
+        }
 
     }
 

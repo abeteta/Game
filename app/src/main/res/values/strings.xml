@@ -5,4 +5,8 @@
     <string name="lbl_descripcion">Descripcion:</string>
     <string name="sharedPreferences">videoPlayerPreferences</string>
     <string name="host">http://192.168.0.16:8080</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_field_required">This field is required</string>
 </resources>

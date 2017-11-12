@@ -3,9 +3,12 @@ package com.garmadell.videoplayer.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.garmadell.videoplayer.R;
@@ -29,6 +32,7 @@ public class PreguntasRespuestasActivity extends AppCompatActivity {
     private TextView lbl_respuesta2;
     private TextView lbl_respuesta3;
     private TextView lbl_respuesta4;
+    private Button miFicha;
     private List<Pregunta> listadoPreguntas;
     private ImageButton btn_confirmar;
     private Handler handler = new Handler();
@@ -47,7 +51,7 @@ public class PreguntasRespuestasActivity extends AppCompatActivity {
         lbl_respuesta3 = (TextView) findViewById(R.id.lbl_respuesta3);
         lbl_respuesta4 = (TextView) findViewById(R.id.lbl_respuesta4);
         btn_confirmar = (ImageButton) findViewById(R.id.btn_confirmar);
-
+        miFicha = (Button) findViewById(R.id.miFicha);
 
         btn_confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +87,11 @@ public class PreguntasRespuestasActivity extends AppCompatActivity {
                     lbl_respuesta1.setText(listadoPreguntas.get(indice).getRespuestas().get(0).getDesc_respuesta());
                     lbl_respuesta2.setText(listadoPreguntas.get(indice).getRespuestas().get(1).getDesc_respuesta());
                     lbl_respuesta3.setText(listadoPreguntas.get(indice).getRespuestas().get(2).getDesc_respuesta());
+
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(30, 70);
+                    lp.setMarginStart(57);
+                    lp.setMargins(57,10,0,0);
+                    miFicha.setLayoutParams(lp);
                 }
             });
         }

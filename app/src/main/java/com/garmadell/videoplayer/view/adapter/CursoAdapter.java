@@ -43,7 +43,7 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.CursoViewHol
 
         Curso dto = beans.get(position);
         listViewHolder.text_curso.setText(dto.getDesc_curso());
-        Picasso.with(mainActivity.getApplicationContext()).load("http://ciencias.javeriana.edu.co/documents/3722984/3781371/logo.jpg/2c8d3e4b-8cd6-45d5-9a13-a72129d7768d?t=1443572960730&imagePreview=1").placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(listViewHolder.imgPortada);
+        //Picasso.with(mainActivity.getApplicationContext()).load("http://ciencias.javeriana.edu.co/documents/3722984/3781371/logo.jpg/2c8d3e4b-8cd6-45d5-9a13-a72129d7768d?t=1443572960730&imagePreview=1").placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(listViewHolder.imgPortada);
 
         //holder.bind should not trigger onCheckedChanged, it should just update UI
         listViewHolder.check_curso.setOnCheckedChangeListener(null);

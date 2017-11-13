@@ -22,9 +22,11 @@ import com.garmadell.videoplayer.R;
 import com.garmadell.videoplayer.view.bean.Curso;
 import com.garmadell.videoplayer.view.bean.Pregunta;
 import com.garmadell.videoplayer.view.bean.UsuarioPassword;
+import com.garmadell.videoplayer.view.bean.UsuarioRegistrado;
 import com.garmadell.videoplayer.view.services.CursoService;
 import com.garmadell.videoplayer.view.services.LoginService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,17 +115,18 @@ public class LoginActivity extends AppCompatActivity {
             usuarioPassword.setEmail(email);
             usuarioPassword.setPassword(password);
 
-            Call<Boolean> call = loginService.usuarioRegistrado(usuarioPassword);
+            Call<UsuarioRegistrado> call = loginService.usuarioRegistrado(usuarioPassword);
 
             Log.i("pasa ","por aqui");
-            call.enqueue(new Callback<Boolean>() {
+            call.enqueue(new Callback<UsuarioRegistrado>() {
 
                 @Override
-                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                public void onResponse(Call<UsuarioRegistrado> call, Response<UsuarioRegistrado> response) {
                     if (response.code() == 200) {
-                        Boolean usuarioRegistrado = response.body();
+
+                        Boolean usuarioRegistrado = response.body().getUsuarioRegistrado();
                         if (usuarioRegistrado){
-                        llamaIntent();
+                        llamaListadoCursos(response.body().getIdUsuario());
 
                         }
                         else {
@@ -137,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<Boolean> call, Throwable t) {
+                public void onFailure(Call<UsuarioRegistrado> call, Throwable t) {
                     Log.i("onFailure", "onFailure");
                     Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
                     finish();
@@ -204,8 +207,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void llamaIntent() {
+    private void llamaListadoCursos(Integer idUsuario) {
         Intent intent = new Intent(this, CursoActivity.class);
+        intent.putExtra("idUsuario", (Serializable) idUsuario);
         startActivity(intent);
 
     }

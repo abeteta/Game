@@ -1,9 +1,7 @@
 package com.garmadell.videoplayer.view.services;
 
-
-import com.garmadell.videoplayer.view.bean.UsuarioPassword;
-import com.garmadell.videoplayer.view.bean.UsuarioRegistrado;
-
+import com.garmadell.videoplayer.view.bean.RespuestaRequest;
+import com.garmadell.videoplayer.view.bean.RespuestaResponse;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -15,7 +13,7 @@ import retrofit2.http.POST;
  * Created by alex on 11/12/17.
  */
 
-public interface LoginService {
+public interface GrabaRespuestaService {
 
     String ROOT_URL = "http://192.168.0.16:8080";
 
@@ -24,8 +22,8 @@ public interface LoginService {
         And our method that will return us the List of Video
     */
 
-    @POST("/usuario/usuarioRegistrado")
-    Call<UsuarioRegistrado> usuarioRegistrado(@Body UsuarioPassword usuarioPassword);
+    @POST("/historicoVersus/grabaRespuesta")
+    Call<RespuestaResponse> grabaRespuesta(@Body RespuestaRequest respuestaRequest);
 
 
     Retrofit retrofit = new Retrofit.Builder()

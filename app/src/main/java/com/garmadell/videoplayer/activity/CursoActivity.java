@@ -43,17 +43,22 @@ public class CursoActivity extends AppCompatActivity {
     CursoFragment fragment;
     CursoService cursoService = CursoService.retrofit.create(CursoService.class);
     List<Pregunta> listadoPreguntas;
+    Integer idUsuario = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curso);
 
-        listaCurso();
+        if(getIntent().getExtras() != null){
+            idUsuario = (Integer) getIntent().getExtras().getSerializable("idUsuario");
+        }
+
+        listaCurso(idUsuario);
 
     }
 
-    private void listaCurso() {
+    private void listaCurso(final Integer idUsuario) {
         /* Primer Fragment */
         transaction = getSupportFragmentManager().beginTransaction();
         fragment = new CursoFragment();
@@ -93,13 +98,13 @@ public class CursoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkedStatus = fragment.getmAdapter().getCheckedStatus();
-                llamaIntent();
+                llamaPreguntasYRespuestas(idUsuario);
                 Log.i("prueba onClick", "Continuar");
             }
         });
     }
 
-    private void llamaIntent() {
+    private void llamaPreguntasYRespuestas(final Integer idUsuario) {
         List<Curso> listCursos = fragment.getBeans();
 
         List<Integer> idsSeleccionados = new ArrayList<>();
@@ -119,7 +124,7 @@ public class CursoActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     listadoPreguntas = response.body();
 
-                    presentaPreguntas();
+                    presentaPreguntas(idUsuario);
 
                 } else {
                     Log.i("Else", "Else");
@@ -138,11 +143,12 @@ public class CursoActivity extends AppCompatActivity {
 
     }
 
-    private void presentaPreguntas() {
+    private void presentaPreguntas(Integer idUsuario) {
 
 
         Intent intent = new Intent(this, PreguntasRespuestasActivity.class);
-        intent.putExtra("parametro1", (Serializable) listadoPreguntas);
+        intent.putExtra("idUsuario", (Serializable) idUsuario);
+        intent.putExtra("listadoPreguntas", (Serializable) listadoPreguntas);
         //     intent.putExtra("parametro2", listadoPreguntas.get(0).getRespuestas().get(0));
         //     intent.putExtra("parametro3", listadoPreguntas.get(0).getRespuestas().get(1));
         //     intent.putExtra("parametro4", listadoPreguntas.get(0).getRespuestas().get(2));

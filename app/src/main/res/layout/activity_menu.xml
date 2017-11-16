@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:text="¿Estas listo para competir?"
+        android:textSize="20sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.20" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <Button
+            android:id="@+id/btnNewQuiz"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp"
+            android:background="@color/colorPrimary"
+            android:text="Nueva Partida"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/imageBook"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="0.06"
+            app:srcCompat="@mipmap/ic_bookfinger"
+            android:contentDescription="@string/lbl_descripcion" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <Button
+            android:id="@+id/btnRegistrar"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp"
+            android:background="@color/colorPrimary"
+            android:text="Perfil"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/imageUsuario"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:layout_weight="0.06"
+            app:srcCompat="@mipmap/ic_user"
+            android:contentDescription="@string/lbl_descripcion" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <Button
+            android:id="@+id/btnSugPregunta"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp"
+            android:background="@color/colorPrimary"
+            android:text="Sugerir Pregunta"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/imagePregunta"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:layout_weight="0.06"
+            app:srcCompat="@mipmap/ic_question"
+            android:contentDescription="@string/lbl_descripcion" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <Button
+            android:id="@+id/btnRevPregunta"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp"
+            android:background="@color/colorPrimary"
+            android:text="Revisar Pregunta"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/imageRevPregunta"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:layout_weight="0.06"
+            app:srcCompat="@mipmap/ic_question"
+            android:contentDescription="@string/lbl_descripcion" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -117,7 +117,12 @@ public class MenuActivity extends AppCompatActivity {
 
                     idVersus = response.body().getId_versus();
                     numeroJugador = (response.body().getId_jugador_primario()==idUsuario) ? 1 : 2;
-                    buscaOponente();
+
+                    if(request.getEstado_versus().equals(1)){
+                        buscaOponente();
+                    }  else {
+                        llamaListadoCursos();
+                    }
 
                 } else {
                     Log.i("Else", "Else");

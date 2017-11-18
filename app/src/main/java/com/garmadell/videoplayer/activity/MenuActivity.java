@@ -11,10 +11,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.garmadell.videoplayer.R;
+import com.garmadell.videoplayer.view.bean.Curso;
+import com.garmadell.videoplayer.view.bean.Dificultad;
 import com.garmadell.videoplayer.view.bean.Versus;
+import com.garmadell.videoplayer.view.services.CursoService;
 import com.garmadell.videoplayer.view.services.StudyService;
 
 import java.io.Serializable;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +34,7 @@ import static com.garmadell.videoplayer.R.string.error_user_password;
 public class MenuActivity extends AppCompatActivity {
 
     StudyService studyService = StudyService.retrofit.create(StudyService.class);
+    CursoService cursoService = CursoService.retrofit.create(CursoService.class);
 
     private Button btnNewQuiz;
     private Button btnPerfil;
@@ -39,6 +44,9 @@ public class MenuActivity extends AppCompatActivity {
     private Integer idVersus;
     private Integer numeroJugador;
     private Integer idOponente;
+    List<Curso> listadoCursos;;
+    List<Dificultad> listadoDificultad;
+    private Boolean unaVez = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,12 @@ public class MenuActivity extends AppCompatActivity {
 
         if (getIntent().getExtras() != null) {
             idUsuario = (Integer) getIntent().getExtras().getSerializable("idUsuario");
+        }
+
+        if(unaVez) {
+            llenaCursos();
+            llenaDificultad();
+            unaVez = false;
         }
 
         btnNewQuiz.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +86,7 @@ public class MenuActivity extends AppCompatActivity {
         btnSugPregunta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //listadoCurso();
                 llamaSugerirPregunta();
             }
         });
@@ -180,11 +195,72 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Listado de Cursos para enviarlos a la pantalla de suguerir pregunta y mostarlos elementos en el spinner.
+
+    private void llenaCursos() {
+
+        Call<List<Curso>> call = cursoService.getList();
+
+        call.enqueue(new Callback<List<Curso>>() {
+
+            @Override
+            public void onResponse(Call<List<Curso>> call, Response<List<Curso>> response) {
+                if (response.code() == 200) {
+                    listadoCursos = response.body();
+
+                } else {
+
+                    Log.i("Else", "Else");
+                    Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Curso>> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
+                Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                //finish();
+            }
+        });
+    }
+
+    // Listado de dificultad para enviarlos a la pantalla de suguerir pregunta y mostarlos elementos en el spinner.
+
+    private void llenaDificultad() {
+
+        Call<List<Dificultad>> call = studyService.getList();
+
+        call.enqueue(new Callback<List<Dificultad>>() {
+
+            @Override
+            public void onResponse(Call<List<Dificultad>> call, Response<List<Dificultad>> response) {
+                if (response.code() == 200) {
+                    listadoDificultad = response.body();
+
+                } else {
+
+                    Log.i("Else", "Else");
+                    Toast.makeText(getApplicationContext(), "Error al cargar Listado Dificultad", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Dificultad>> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
+                Toast.makeText(getApplicationContext(), "Error en cargar Listado Dificultad", Toast.LENGTH_LONG).show();
+                //finish();
+            }
+        });
+    }
+
     private void llamaSugerirPregunta() {
         Intent intent = new Intent(this, SugerirPreguntaActivity.class);
         intent.putExtra("idUsuario", (Serializable) idUsuario);
+        intent.putExtra("listadoCursos", (Serializable) listadoCursos);
+        intent.putExtra("listadoDificultad", (Serializable) listadoDificultad);
         startActivity(intent);
-
     }
 
     private void llamaRevisarPregunta() {

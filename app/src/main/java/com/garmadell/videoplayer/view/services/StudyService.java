@@ -1,6 +1,7 @@
 package com.garmadell.videoplayer.view.services;
 
 import com.garmadell.videoplayer.view.bean.Curso;
+import com.garmadell.videoplayer.view.bean.Dificultad;
 import com.garmadell.videoplayer.view.bean.Perfil;
 import com.garmadell.videoplayer.view.bean.Pregunta;
 import com.garmadell.videoplayer.view.bean.Usuario;
@@ -47,6 +48,10 @@ public interface StudyService {
     /// PERFIL
     @POST("/usuario/datosUsuario")
     Call<Perfil> datosUsuario(@Body Usuario usuario);
+
+    //
+    @GET("/dificultad/list")
+    Call<List<Dificultad>> getList();
 
 
 

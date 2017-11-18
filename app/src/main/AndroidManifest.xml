@@ -37,6 +37,12 @@
         <activity
             android:name="com.garmadell.videoplayer.activity.LoginActivity"
             />
+        <activity
+            android:name="com.garmadell.videoplayer.activity.MenuActivity"
+            />
+        <activity
+            android:name="com.garmadell.videoplayer.activity.PerfilActivity"
+            />
     </application>
 
 </manifest>

@@ -15,10 +15,12 @@ import android.widget.Toast;
 import com.garmadell.videoplayer.R;
 import com.garmadell.videoplayer.view.bean.Curso;
 import com.garmadell.videoplayer.view.bean.Pregunta;
+import com.garmadell.videoplayer.view.bean.Versus;
 import com.garmadell.videoplayer.view.bean.Video;
 import com.garmadell.videoplayer.view.fragment.CursoFragment;
 import com.garmadell.videoplayer.view.fragment.ListVideoFragment;
 import com.garmadell.videoplayer.view.services.CursoService;
+import com.garmadell.videoplayer.view.services.StudyService;
 import com.garmadell.videoplayer.view.services.VideoService;
 import com.squareup.picasso.Picasso;
 
@@ -42,8 +44,12 @@ public class CursoActivity extends AppCompatActivity {
     FragmentTransaction transaction;
     CursoFragment fragment;
     CursoService cursoService = CursoService.retrofit.create(CursoService.class);
+    StudyService studyService = StudyService.retrofit.create(StudyService.class);
     List<Pregunta> listadoPreguntas;
     Integer idUsuario = 0;
+    Integer idVersus = 0;
+    Integer numeroJugador = 0;
+    Boolean esMiTurno = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +58,15 @@ public class CursoActivity extends AppCompatActivity {
 
         if(getIntent().getExtras() != null){
             idUsuario = (Integer) getIntent().getExtras().getSerializable("idUsuario");
+            idVersus = (Integer) getIntent().getExtras().getSerializable("idVersus");
+            numeroJugador = (Integer) getIntent().getExtras().getSerializable("numeroJugador");
         }
 
-        listaCurso(idUsuario);
+        listaCurso(idUsuario, idVersus, numeroJugador);
 
     }
 
-    private void listaCurso(final Integer idUsuario) {
+    private void listaCurso(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
         /* Primer Fragment */
         transaction = getSupportFragmentManager().beginTransaction();
         fragment = new CursoFragment();
@@ -98,13 +106,104 @@ public class CursoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkedStatus = fragment.getmAdapter().getCheckedStatus();
-                llamaPreguntasYRespuestas(idUsuario);
+                if(numeroJugador==1) {
+                    buscaTurnoPrimerJugador();
+                } else
+                {
+                    buscaTurnoSegundoJugador();
+                }
                 Log.i("prueba onClick", "Continuar");
             }
         });
     }
 
-    private void llamaPreguntasYRespuestas(final Integer idUsuario) {
+    private void buscaTurnoPrimerJugador() {
+
+        final Versus request = new Versus();
+
+        request.setId_versus(idVersus);
+        request.setId_jugador_primario(idUsuario);
+
+        Call<Boolean> call = studyService.buscaTurnoPrimerJugador(request);
+
+        call.enqueue(new Callback<Boolean>() {
+
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.code() == 200) {
+
+                    esMiTurno = response.body();
+
+                    if(esMiTurno.equals(true)){
+
+                        Toast.makeText(getApplicationContext(), "Que gane el mejor", Toast.LENGTH_SHORT).show();
+                        llamaPreguntasYRespuestas(idUsuario, idVersus, numeroJugador);
+                    } else {
+                        //Toast.makeText(getApplicationContext(), "Buscando Oponente", Toast.LENGTH_SHORT).show();
+                        buscaTurnoPrimerJugador();
+                    }
+
+                } else {
+                    Log.i("Else", "Else");
+                    Toast.makeText(getApplicationContext(), "Error al buscar turno primer jugador", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
+                Toast.makeText(getApplicationContext(), "Error al buscar turno primer Jugador", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+
+    }
+
+    private void buscaTurnoSegundoJugador() {
+
+        final Versus request = new Versus();
+
+        request.setId_versus(idVersus);
+        request.setId_jugador_secundario(idUsuario);
+
+        Call<Boolean> call = studyService.buscaTurnoSegundoJugador(request);
+
+        call.enqueue(new Callback<Boolean>() {
+
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.code() == 200) {
+
+                    esMiTurno = response.body();
+
+                    if(esMiTurno.equals(true)){
+
+                        Toast.makeText(getApplicationContext(), "Que gane el mejor", Toast.LENGTH_SHORT).show();
+                        llamaPreguntasYRespuestas(idUsuario, idVersus, numeroJugador);
+                    } else {
+                        //Toast.makeText(getApplicationContext(), "Buscando Oponente", Toast.LENGTH_SHORT).show();
+                        buscaTurnoSegundoJugador();
+                    }
+
+                } else {
+                    Log.i("Else", "Else");
+                    Toast.makeText(getApplicationContext(), "Error al buscar turno segundo jugador", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
+                Toast.makeText(getApplicationContext(), "Error al buscar turno segundo Jugador", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+
+    }
+
+    private void llamaPreguntasYRespuestas(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
         List<Curso> listCursos = fragment.getBeans();
 
         List<Integer> idsSeleccionados = new ArrayList<>();
@@ -124,7 +223,7 @@ public class CursoActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     listadoPreguntas = response.body();
 
-                    presentaPreguntas(idUsuario);
+                    presentaPreguntas(idUsuario, idVersus, numeroJugador);
 
                 } else {
                     Log.i("Else", "Else");
@@ -143,11 +242,13 @@ public class CursoActivity extends AppCompatActivity {
 
     }
 
-    private void presentaPreguntas(Integer idUsuario) {
+    private void presentaPreguntas(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
 
 
         Intent intent = new Intent(this, PreguntasRespuestasActivity.class);
         intent.putExtra("idUsuario", (Serializable) idUsuario);
+        intent.putExtra("idVersus", (Serializable) idVersus);
+        intent.putExtra("numeroJugador", (Serializable) numeroJugador);
         intent.putExtra("listadoPreguntas", (Serializable) listadoPreguntas);
         //     intent.putExtra("parametro2", listadoPreguntas.get(0).getRespuestas().get(0));
         //     intent.putExtra("parametro3", listadoPreguntas.get(0).getRespuestas().get(1));

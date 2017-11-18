@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mEmailView = (EditText) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
+        mProgressView = findViewById(R.id.login_progress);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.btnLogin);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -208,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void llamaListadoCursos(Integer idUsuario) {
-        Intent intent = new Intent(this, CursoActivity.class);
+        Intent intent = new Intent(this, MenuActivity.class);
         intent.putExtra("idUsuario", (Serializable) idUsuario);
         startActivity(intent);
 

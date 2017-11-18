@@ -16,7 +16,85 @@
         android:layout_width="wrap_content"
         android:layout_height="34dp"
         android:layout_gravity="center"
-        android:text="Perfil"
+        android:text="PERFIL"
         android:textSize="20sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10" />
+
+    <TextView
+        android:id="@+id/txt_tit_nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:text="Nombre:"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/txt_nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:text=""
+        android:textSize="20sp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10" />
+    <TextView
+        android:id="@+id/txt_tit_apellido"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:text="Apellido:"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/txt_apellido"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:text=""
+        android:textSize="20sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10" />
+    <TextView
+        android:id="@+id/txt_tit_email"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:text="Email:"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/txt_email"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:text=""
+        android:textSize="20sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10" />
+    <TextView
+        android:id="@+id/txt_tit_tipousuario"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:text="Tipo Usuario:"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/txt_tipousuario"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:text=""
+        android:textSize="20sp"
+        />
+
 
 </LinearLayout>

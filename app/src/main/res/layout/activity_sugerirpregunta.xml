@@ -95,106 +95,177 @@
         android:layout_width="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/edit_Respuesta1"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:background="@android:color/background_light"
-            android:textSize="14sp"
-            android:hint="   Respuesta # 1" />
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/rdb_Respuesta1"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:checked="false" />
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/edit_Respuesta1"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:background="@android:color/background_light"
+                    android:textSize="14sp"
+                    android:hint="   Respuesta # 1" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15sp"
+                android:layout_weight="0.16" />
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/edit_Respuesta2"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:background="@android:color/background_light"
+                    android:textSize="14sp"
+                    android:hint="   Respuesta # 2" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15sp"
+                android:layout_weight="0.16" />
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal">
+            <EditText
+                android:id="@+id/edit_Respuesta3"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="30dp"
+                android:background="@android:color/background_light"
+                android:textSize="14sp"
+                android:hint="   Respuesta # 3" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15sp"
+                android:layout_weight="0.16" />
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal">
+            <EditText
+                android:id="@+id/edit_Respuesta4"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="30dp"
+                android:background="@android:color/background_light"
+                android:textSize="14sp"
+                android:hint="   Respuesta # 4" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/opciones_respuesta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/opciones_respuesta"
+                >
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15sp"
+                    android:layout_weight="0.06" />
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/rdb_Respuesta1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:checked="false" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:layout_weight="0.06" />
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/rdb_Respuesta2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:checked="false" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="35sp"
+                    android:layout_weight="0.06" />
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/rdb_Respuesta3"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:checked="false" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="35sp"
+                    android:layout_weight="0.06" />
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/rdb_Respuesta4"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:checked="false" />
+
+            </RadioGroup>
+        </LinearLayout>
+
     </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.06" />
+        android:layout_weight="0.16" />
 
     <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/edit_Respuesta2"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:background="@android:color/background_light"
-            android:textSize="14sp"
-            android:hint="   Respuesta # 2" />
-
-        <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/rdb_Respuesta2"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:checked="false" />
-    </LinearLayout>
-
-    <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.06" />
+        android:layout_height="50dp">
 
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/edit_Respuesta3"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:background="@android:color/background_light"
-            android:textSize="14sp"
-            android:hint="   Respuesta # 3" />
+        <Button
+            android:id="@+id/btnAceptar"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="110dp"
+            android:background="@color/colorPrimary"
+            android:text="Aceptar"
+            android:layout_gravity="center"/>
 
-        <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/rdb_Respuesta3"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:checked="false" />
     </LinearLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.06" />
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/edit_Respuesta4"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:background="@android:color/background_light"
-            android:textSize="14sp"
-            android:hint="   Respuesta # 4" />
-
-        <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/rdb_Respuesta4"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:checked="false" />
-    </LinearLayout>
-
 </LinearLayout>
+
+
+
+
+
+

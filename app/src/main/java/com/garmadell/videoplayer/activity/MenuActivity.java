@@ -47,6 +47,8 @@ public class MenuActivity extends AppCompatActivity {
 
         btnNewQuiz = (Button) findViewById(R.id.btnNewQuiz);
         btnPerfil = (Button) findViewById(R.id.btnPerfil);
+        btnSugPregunta = (Button) findViewById(R.id.btnSugPregunta);
+        btnRevPregunta = (Button) findViewById(R.id.btnRevPregunta);
 
 
         if (getIntent().getExtras() != null) {
@@ -64,6 +66,20 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 llamaPerfil();
+            }
+        });
+
+        btnSugPregunta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llamaSugerirPregunta();
+            }
+        });
+
+        btnRevPregunta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llamaRevisarPregunta();
             }
         });
 
@@ -162,7 +178,19 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PerfilActivity.class);
         intent.putExtra("idUsuario", (Serializable) idUsuario);
         startActivity(intent);
+    }
 
+    private void llamaSugerirPregunta() {
+        Intent intent = new Intent(this, SugerirPreguntaActivity.class);
+        intent.putExtra("idUsuario", (Serializable) idUsuario);
+        startActivity(intent);
+
+    }
+
+    private void llamaRevisarPregunta() {
+        Intent intent = new Intent(this, SugerirPreguntaActivity.class);
+        intent.putExtra("idUsuario", (Serializable) idUsuario);
+        startActivity(intent);
     }
 
 

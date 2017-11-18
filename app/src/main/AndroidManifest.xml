@@ -43,6 +43,9 @@
         <activity
             android:name="com.garmadell.videoplayer.activity.PerfilActivity"
             />
+        <activity
+            android:name="com.garmadell.videoplayer.activity.SugerirPreguntaActivity"
+            />
     </application>
 
 </manifest>

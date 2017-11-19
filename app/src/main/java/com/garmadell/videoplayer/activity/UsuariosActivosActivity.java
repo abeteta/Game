@@ -1,30 +1,22 @@
 package com.garmadell.videoplayer.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.BoolRes;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.garmadell.videoplayer.R;
-import com.garmadell.videoplayer.view.bean.Curso;
+import com.garmadell.videoplayer.view.bean.EstadoUsuario;
 import com.garmadell.videoplayer.view.bean.Pregunta;
+import com.garmadell.videoplayer.view.bean.UsuariosActivos;
 import com.garmadell.videoplayer.view.bean.Versus;
-import com.garmadell.videoplayer.view.bean.VersusCursos;
-import com.garmadell.videoplayer.view.bean.Video;
-import com.garmadell.videoplayer.view.fragment.CursoFragment;
-import com.garmadell.videoplayer.view.fragment.ListVideoFragment;
+import com.garmadell.videoplayer.view.fragment.UsuariosActivosFragment;
 import com.garmadell.videoplayer.view.services.CursoService;
 import com.garmadell.videoplayer.view.services.StudyService;
-import com.garmadell.videoplayer.view.services.VideoService;
-import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,14 +29,14 @@ import retrofit2.Response;
 import static com.garmadell.videoplayer.R.string.error_rest;
 
 /**
- * Created by alex on 10/21/17.
+ * Created by alex on 11/19/17.
  */
 
-public class CursoActivity extends AppCompatActivity {
+public class UsuariosActivosActivity extends AppCompatActivity {
 
     boolean[] checkedStatus;
     FragmentTransaction transaction;
-    CursoFragment fragment;
+    UsuariosActivosFragment fragment;
     CursoService cursoService = CursoService.retrofit.create(CursoService.class);
     StudyService studyService = StudyService.retrofit.create(StudyService.class);
     List<Pregunta> listadoPreguntas;
@@ -56,7 +48,7 @@ public class CursoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_curso);
+        setContentView(R.layout.activity_usuarios);
 
         if(getIntent().getExtras() != null){
             idUsuario = (Integer) getIntent().getExtras().getSerializable("idUsuario");
@@ -64,23 +56,26 @@ public class CursoActivity extends AppCompatActivity {
             numeroJugador = (Integer) getIntent().getExtras().getSerializable("numeroJugador");
         }
 
-        listaCurso(idUsuario, idVersus, numeroJugador);
+        listaUsuariosActivos(idUsuario, idVersus, numeroJugador);
 
     }
 
-    private void listaCurso(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
+    private void listaUsuariosActivos(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
         /* Primer Fragment */
         transaction = getSupportFragmentManager().beginTransaction();
-        fragment = new CursoFragment();
+        fragment = new UsuariosActivosFragment();
+        EstadoUsuario estadoUsuario = new EstadoUsuario();
+        estadoUsuario.setEstado(1);
 
-        Call<List<Curso>> call = cursoService.getList();
+        Call<List<UsuariosActivos>> call = studyService.listadoUsuariosActivos(estadoUsuario);
 
-        call.enqueue(new Callback<List<Curso>>() {
+        call.enqueue(new Callback<List<UsuariosActivos>>() {
 
             @Override
-            public void onResponse(Call<List<Curso>> call, Response<List<Curso>> response) {
+            public void onResponse(Call<List<UsuariosActivos>> call, Response<List<UsuariosActivos>> response) {
+
                 if (response.code() == 200) {
-                    List<Curso> beans = response.body();
+                    List<UsuariosActivos> beans = response.body();
                     fragment.setBeans(beans);
                     commitTransaction(transaction);
                 } else {
@@ -92,7 +87,8 @@ public class CursoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Curso>> call, Throwable t) {
+            public void onFailure(Call<List<UsuariosActivos>> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
                 commitTransaction(transaction);
                 Log.i("onFailure", "onFailure");
                 Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
@@ -100,60 +96,24 @@ public class CursoActivity extends AppCompatActivity {
             }
         });
 
-        transaction.replace(R.id.content_fragment_list_curso, fragment);
-        //   transaction.commit();
+        transaction.replace(R.id.content_fragment_list_usuarios_activos, fragment);
+        //transaction.commit();
 
-        AppCompatButton button = (AppCompatButton) findViewById(R.id.btn_confirmar);
+        AppCompatButton button = (AppCompatButton) findViewById(R.id.btn_jugar);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkedStatus = fragment.getmAdapter().getCheckedStatus();
-                grabaVersusCurso(idUsuario, idVersus, numeroJugador);
-                llamaListadoUsuariosActivos();
+
+                //grabaVersusCurso(idUsuario, idVersus, numeroJugador);
+
                 Log.i("prueba onClick", "Continuar");
             }
         });
     }
 
     private void grabaVersusCurso(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
-        List<Curso> listCursos = fragment.getBeans();
 
-        List<Integer> idsSeleccionados = new ArrayList<>();
-        List<VersusCursos> versusCursosList = new ArrayList<VersusCursos>();
-
-        for (int index = 0; index < checkedStatus.length; index++) {
-            if (checkedStatus[index]) {
-                VersusCursos newVersusCursos = new VersusCursos();
-                newVersusCursos.setId_versus(idVersus);
-                newVersusCursos.setId_curso(listCursos.get(index).getId_curso());
-                versusCursosList.add(newVersusCursos);
-            }
-        }
-
-        Call<Boolean> call = studyService.grabaVersusCursos(versusCursosList);
-
-        call.enqueue(new Callback<Boolean>() {
-
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.code() == 200) {
-                    Boolean respuestaOk = response.body();
-                    //presentaPreguntas(idUsuario, idVersus, numeroJugador);
-
-                } else {
-                    Log.i("Else", "Else");
-                    Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Log.i("onFailure", "onFailure");
-                Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
 
     }
 
@@ -244,13 +204,13 @@ public class CursoActivity extends AppCompatActivity {
     }
 
     private void llamaPreguntasYRespuestas(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
-        List<Curso> listCursos = fragment.getBeans();
+        List<UsuariosActivos> listUsuariosActivos = fragment.getBeans();
 
         List<Integer> idsSeleccionados = new ArrayList<>();
 
         for (int index = 0; index < checkedStatus.length; index++) {
             if (checkedStatus[index]) {
-                idsSeleccionados.add(listCursos.get(index).getId_curso());
+                idsSeleccionados.add(idsSeleccionados.get(index));
             }
         }
 
@@ -317,17 +277,7 @@ public class CursoActivity extends AppCompatActivity {
 
     }
 
-    private void llamaListadoUsuariosActivos() {
-        Intent intent = new Intent(this, UsuariosActivosActivity.class);
-        intent.putExtra("idUsuario", (Serializable) idUsuario);
-        intent.putExtra("idVersus", (Serializable) idVersus);
-        intent.putExtra("numeroJugador", (Serializable) numeroJugador);
-        startActivity(intent);
-
-    }
-
     public void commitTransaction(FragmentTransaction transaction) {
         transaction.commit();
     }
-
 }

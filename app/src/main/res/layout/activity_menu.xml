@@ -131,4 +131,22 @@
             android:contentDescription="@string/lbl_descripcion" />
     </LinearLayout>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10" />
+
+    <Switch
+        android:id="@+id/swcEstado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="Estado"
+        android:layout_centerHorizontal="true"
+        android:textOn="Activo"
+        android:textOff="Inactivo"
+        android:layout_gravity="center"
+        android:textColor="#008F36"/>
+
+
 </LinearLayout>

@@ -1,11 +1,15 @@
 package com.garmadell.videoplayer.view.services;
 
+import com.garmadell.videoplayer.view.bean.CambioEstadoUsuario;
 import com.garmadell.videoplayer.view.bean.Curso;
 import com.garmadell.videoplayer.view.bean.Dificultad;
+import com.garmadell.videoplayer.view.bean.EstadoUsuario;
 import com.garmadell.videoplayer.view.bean.Perfil;
 import com.garmadell.videoplayer.view.bean.Pregunta;
 import com.garmadell.videoplayer.view.bean.Usuario;
+import com.garmadell.videoplayer.view.bean.UsuariosActivos;
 import com.garmadell.videoplayer.view.bean.Versus;
+import com.garmadell.videoplayer.view.bean.VersusCursos;
 
 import java.util.List;
 
@@ -23,7 +27,7 @@ import retrofit2.http.Path;
 
 public interface StudyService {
 
-    String ROOT_URL = "http://192.168.0.16:8080";
+    String ROOT_URL = "http://192.168.0.14:8080";
 
 
     @POST("/versus/buscarQuiz")
@@ -53,7 +57,17 @@ public interface StudyService {
     @GET("/dificultad/list")
     Call<List<Dificultad>> getList();
 
+    ///  VERSUS CURSOS SERVICE
+    @POST("/versusCursos/graba")
+    Call<Boolean> grabaVersusCursos(@Body List<VersusCursos> versusCursos);
 
+    ///
+    @POST("/usuario/cambioEstado")
+    Call<Boolean> cambioEstadoUsuario(@Body CambioEstadoUsuario cambioEstadoUsuario);
+
+    ///
+    @POST("/usuario/listadoUsuariosActivos")
+    Call<List<UsuariosActivos>> listadoUsuariosActivos(@Body EstadoUsuario estadoUsuario);
 
 
     Retrofit retrofit = new Retrofit.Builder()

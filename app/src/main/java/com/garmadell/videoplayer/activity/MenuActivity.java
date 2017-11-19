@@ -7,10 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.garmadell.videoplayer.R;
+import com.garmadell.videoplayer.view.bean.CambioEstadoUsuario;
 import com.garmadell.videoplayer.view.bean.Curso;
 import com.garmadell.videoplayer.view.bean.Dificultad;
 import com.garmadell.videoplayer.view.bean.Versus;
@@ -47,6 +50,7 @@ public class MenuActivity extends AppCompatActivity {
     List<Curso> listadoCursos;;
     List<Dificultad> listadoDificultad;
     private Boolean unaVez = true;
+    private Switch swcEstado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,9 @@ public class MenuActivity extends AppCompatActivity {
         btnPerfil = (Button) findViewById(R.id.btnPerfil);
         btnSugPregunta = (Button) findViewById(R.id.btnSugPregunta);
         btnRevPregunta = (Button) findViewById(R.id.btnRevPregunta);
+        swcEstado = (Switch) findViewById(R.id.swcEstado);
+        //swcEstado.setOnCheckedChangeListener(this);
+
 
 
         if (getIntent().getExtras() != null) {
@@ -98,7 +105,15 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+        swcEstado.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                cambioEstadoUsuario();
+            }
+        });
+
     }
+
 
     private void buscaQuiz() {
 
@@ -118,11 +133,13 @@ public class MenuActivity extends AppCompatActivity {
                     idVersus = response.body().getId_versus();
                     numeroJugador = (response.body().getId_jugador_primario()==idUsuario) ? 1 : 2;
 
-                    if(request.getEstado_versus().equals(1)){
+                    llamaListadoCursos();
+
+/*                    if(request.getEstado_versus().equals(1)){
                         buscaOponente();
                     }  else {
                         llamaListadoCursos();
-                    }
+                    }*/
 
                 } else {
                     Log.i("Else", "Else");
@@ -274,5 +291,37 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void cambioEstadoUsuario() {
+
+        final CambioEstadoUsuario request = new CambioEstadoUsuario();
+
+        request.setId_usuario(idUsuario);
+
+        Call<Boolean> call = studyService.cambioEstadoUsuario(request);
+
+        call.enqueue(new Callback<Boolean>() {
+
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.code() == 200) {
+
+                    Toast.makeText(getApplicationContext(), "Cambio Aplicado", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Log.i("Else", "Else");
+                    Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
+                Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+
+    }
 
 }

@@ -17,7 +17,7 @@ import retrofit2.http.POST;
 
 public interface LoginService {
 
-    String ROOT_URL = "http://192.168.0.14:8080";
+    String ROOT_URL = "http://192.168.0.16:8080";
 
     /*
         Retrofit get annotation with our URL

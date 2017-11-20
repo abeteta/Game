@@ -1,5 +1,6 @@
 package com.garmadell.videoplayer.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
@@ -58,6 +59,7 @@ public class PreguntasRespuestasActivity extends AppCompatActivity {
     private Integer numeroJugador = 0;
     private Boolean esMiTurno = false;
 
+
     CursoService cursoService = CursoService.retrofit.create(CursoService.class);
     GrabaRespuestaService grabaRespuestaService = GrabaRespuestaService.retrofit.create(GrabaRespuestaService.class);
     StudyService studyService = StudyService.retrofit.create(StudyService.class);
@@ -91,10 +93,12 @@ public class PreguntasRespuestasActivity extends AppCompatActivity {
             listadoPreguntas = (List<Pregunta>) getIntent().getExtras().getSerializable("listadoPreguntas");
 
             lbl_pregunta.setText(listadoPreguntas.get(indice).getDesc_pregunta());
-            lbl_respuesta1.setText(listadoPreguntas.get(indice).getRespuestas().get(0).getDesc_respuesta());
-            lbl_respuesta2.setText(listadoPreguntas.get(indice).getRespuestas().get(1).getDesc_respuesta());
-            lbl_respuesta3.setText(listadoPreguntas.get(indice).getRespuestas().get(2).getDesc_respuesta());
-            // lbl_respuesta4.setText(listadoPreguntas.get(0).getRespuestas().get(3).getDesc_respuesta());
+
+                lbl_respuesta1.setText(listadoPreguntas.get(indice).getRespuestas().get(0).getDesc_respuesta());
+                lbl_respuesta2.setText(listadoPreguntas.get(indice).getRespuestas().get(1).getDesc_respuesta());
+                lbl_respuesta3.setText(listadoPreguntas.get(indice).getRespuestas().get(2).getDesc_respuesta());
+                lbl_respuesta4.setText(listadoPreguntas.get(indice).getRespuestas().get(3).getDesc_respuesta());
+
 
       /*    lbl_pregunta.setText(getIntent().getStringExtra("parametro1"));
             lbl_respuesta1.setText(getIntent().getStringExtra("parametro2"));

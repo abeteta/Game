@@ -28,7 +28,7 @@ import retrofit2.http.Path;
 
 public interface StudyService {
 
-    String ROOT_URL = "http://192.168.0.14:8080";
+    String ROOT_URL = "http://192.168.0.16:8080";
 
 
     @POST("/versus/buscarQuiz")
@@ -77,7 +77,7 @@ public interface StudyService {
 
     ///
     @POST("/versus/esperandoOponente")
-    Call<Boolean> esperandoOponente(@Body EsperandoOponente oponente);
+    Call<List<VersusCursos>> esperandoOponente(@Body EsperandoOponente oponente);
 
 
     Retrofit retrofit = new Retrofit.Builder()

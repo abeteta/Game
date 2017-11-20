@@ -17,11 +17,14 @@ import com.garmadell.videoplayer.view.bean.CambioEstadoUsuario;
 import com.garmadell.videoplayer.view.bean.Curso;
 import com.garmadell.videoplayer.view.bean.Dificultad;
 import com.garmadell.videoplayer.view.bean.EsperandoOponente;
+import com.garmadell.videoplayer.view.bean.Pregunta;
 import com.garmadell.videoplayer.view.bean.Versus;
+import com.garmadell.videoplayer.view.bean.VersusCursos;
 import com.garmadell.videoplayer.view.services.CursoService;
 import com.garmadell.videoplayer.view.services.StudyService;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -51,6 +54,10 @@ public class MenuActivity extends AppCompatActivity {
     List<Dificultad> listadoDificultad;
     private Boolean unaVez = true;
     private Switch swcEstado;
+    Boolean esMiTurno = false;
+    List<VersusCursos> listCursosVersus;
+    List<Integer> listCursosV = new ArrayList<>();
+    List<Pregunta> listadoPreguntas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -318,25 +325,33 @@ public class MenuActivity extends AppCompatActivity {
         request.setEstado_versus(1);
 
 
-        Call<Boolean> call = studyService.esperandoOponente(request);
+        Call<List<VersusCursos>> call = studyService.esperandoOponente(request);
 
-        call.enqueue(new Callback<Boolean>() {
+        call.enqueue(new Callback<List<VersusCursos>>() {
 
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            public void onResponse(Call<List<VersusCursos>> call, Response<List<VersusCursos>> response) {
                 if (response.code() == 200) {
 
-                    Boolean esperando = response.body();
+                    listCursosVersus = response.body();
 
-                    if(esperando){
+                    if(!listCursosVersus.equals(null) && listCursosVersus.size()>0 && swcEstado.isChecked() ){
                         Toast.makeText(getApplicationContext(), "Listo para Jugar", Toast.LENGTH_SHORT).show();
+
+                        for (Integer i = 0 ; i < listCursosVersus.size() ; i++){
+                            idVersus = listCursosVersus.get(i).getId_versus();
+                            Integer tversus = listCursosVersus.get(i).getId_curso();
+                            listCursosV.add(tversus);
+                        }
+
+                        buscaTurnoSegundoJugador();
+
                     } else
                     {
                         if(swcEstado.isChecked()){
                             esperandoOponente();
                         }
                     }
-
 
                 } else {
                     Log.i("Else", "Else");
@@ -346,12 +361,101 @@ public class MenuActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
+            public void onFailure(Call<List<VersusCursos>> call, Throwable t) {
                 Log.i("onFailure", "onFailure");
                 Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
                 finish();
             }
         });
+
+    }
+
+    private void buscaTurnoSegundoJugador() {
+
+        final Versus request = new Versus();
+
+        request.setId_versus(idVersus);
+        request.setId_jugador_secundario(idUsuario);
+
+        Call<Boolean> call = studyService.buscaTurnoSegundoJugador(request);
+
+        call.enqueue(new Callback<Boolean>() {
+
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.code() == 200) {
+
+                    esMiTurno = response.body();
+
+                    if(esMiTurno.equals(true)){
+
+                        Toast.makeText(getApplicationContext(), "Que gane el mejor", Toast.LENGTH_SHORT).show();
+                        llamaPreguntasYRespuestas(idUsuario, idVersus, numeroJugador);
+                    } else {
+                        //Toast.makeText(getApplicationContext(), "Buscando Oponente", Toast.LENGTH_SHORT).show();
+                        buscaTurnoSegundoJugador();
+                    }
+
+                } else {
+                    Log.i("Else", "Else");
+                    Toast.makeText(getApplicationContext(), "Error al buscar turno segundo jugador", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
+                Toast.makeText(getApplicationContext(), "Error al buscar turno segundo Jugador", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+
+    }
+
+    private void llamaPreguntasYRespuestas(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
+
+        Call<List<Pregunta>> call = cursoService.getSeleccionado(listCursosV);
+
+        call.enqueue(new Callback<List<Pregunta>>() {
+
+            @Override
+            public void onResponse(Call<List<Pregunta>> call, Response<List<Pregunta>> response) {
+                if (response.code() == 200) {
+                    listadoPreguntas = response.body();
+                    if(listadoPreguntas.size()>0) {
+                        presentaPreguntas(idUsuario, idVersus, numeroJugador);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "No hay Preguntas y Respuestas", Toast.LENGTH_LONG).show();
+                    }
+
+                } else {
+                    Log.i("Else", "Else");
+                    Toast.makeText(getApplicationContext(), "Error al presentar Preguntas y Respuestas", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Pregunta>> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
+                Toast.makeText(getApplicationContext(), "Error al presentar Preguntas y Respuestas", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+
+    }
+
+    private void presentaPreguntas(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
+
+
+        Intent intent = new Intent(this, PreguntasRespuestasActivity.class);
+        intent.putExtra("idUsuario", (Serializable) idUsuario);
+        intent.putExtra("idVersus", (Serializable) idVersus);
+        intent.putExtra("numeroJugador", (Serializable) numeroJugador);
+        intent.putExtra("listadoPreguntas", (Serializable) listadoPreguntas);
+        startActivity(intent);
+
 
     }
 

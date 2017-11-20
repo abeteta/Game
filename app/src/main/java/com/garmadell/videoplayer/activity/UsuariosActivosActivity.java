@@ -182,6 +182,7 @@ public class UsuariosActivosActivity extends AppCompatActivity {
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.code() == 200) {
                     Boolean respuestaOk = response.body();
+                    buscaTurnoPrimerJugador();
                     //presentaPreguntas(idUsuario, idVersus, numeroJugador);
 
                 } else {
@@ -287,6 +288,7 @@ public class UsuariosActivosActivity extends AppCompatActivity {
     }
 
     private void llamaPreguntasYRespuestas(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
+/*
         List<UsuariosActivos> listUsuariosActivos = fragment.getBeans();
 
         List<Integer> idsSeleccionados = new ArrayList<>();
@@ -296,8 +298,9 @@ public class UsuariosActivosActivity extends AppCompatActivity {
                 idsSeleccionados.add(idsSeleccionados.get(index));
             }
         }
+*/
 
-        Call<List<Pregunta>> call = cursoService.getSeleccionado(idsSeleccionados);
+        Call<List<Pregunta>> call = cursoService.getSeleccionado(idsCursosSeleccionados);
 
         call.enqueue(new Callback<List<Pregunta>>() {
 

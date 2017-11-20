@@ -302,7 +302,7 @@ public class MenuActivity extends AppCompatActivity {
 
                 } else {
                     Log.i("Else", "Else");
-                    Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error en Cambio de Estado", Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
@@ -310,7 +310,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
                 Log.i("onFailure", "onFailure");
-                Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error en Cambio de Estado", Toast.LENGTH_LONG).show();
                 finish();
             }
         });
@@ -355,7 +355,7 @@ public class MenuActivity extends AppCompatActivity {
 
                 } else {
                     Log.i("Else", "Else");
-                    Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error al esperar oponente", Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
@@ -363,7 +363,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<VersusCursos>> call, Throwable t) {
                 Log.i("onFailure", "onFailure");
-                Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error al esperar oponente", Toast.LENGTH_LONG).show();
                 finish();
             }
         });

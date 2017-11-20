@@ -27,7 +27,7 @@ import retrofit2.Response;
 import static com.garmadell.videoplayer.R.string.error_rest;
 
 /**
- * Created by alex on 11/18/17.
+ * Created by Michael Estrada on 11/18/17.
  */
 
 public class SugerirPreguntaActivity extends AppCompatActivity {

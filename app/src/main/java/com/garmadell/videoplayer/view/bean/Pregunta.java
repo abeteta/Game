@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by alex on 11/1/17.
+ * Created by Michael Estrada on 11/1/17.
  */
 
 public class Pregunta implements Serializable{

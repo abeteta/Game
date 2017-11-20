@@ -3,7 +3,7 @@ package com.garmadell.videoplayer.view.bean;
 import java.io.Serializable;
 
 /**
- * Created by alex on 11/17/17.
+ * Created by Michael Estrada on 11/17/17.
  */
 
 public class Usuario implements Serializable {

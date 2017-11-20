@@ -38,7 +38,7 @@ import static com.garmadell.videoplayer.R.string.error_rest;
 import static com.garmadell.videoplayer.R.string.error_user_password;
 
 /**
- * Created by alex on 11/12/17.
+ * Created by Michael Estrada on 11/12/17.
  */
 
 public class LoginActivity extends AppCompatActivity {

@@ -19,7 +19,7 @@ import com.garmadell.videoplayer.view.bean.UsuariosActivos;
 import java.util.List;
 
 /**
- * Created by alex on 11/19/17.
+ * Created by Michael Estrada on 11/19/17.
  */
 
 public class UsuariosActivosAdapter extends RecyclerView.Adapter<UsuariosActivosAdapter.UsuariosActivosViewHolder> {

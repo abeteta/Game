@@ -23,7 +23,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
- * Created by alex on 11/15/17.
+ * Created by Michael Estrada on 11/15/17.
  */
 
 public interface StudyService {

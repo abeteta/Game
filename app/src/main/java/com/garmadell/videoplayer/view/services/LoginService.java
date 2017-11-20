@@ -12,7 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 /**
- * Created by alex on 11/12/17.
+ * Created by Michael Estrada on 11/12/17.
  */
 
 public interface LoginService {

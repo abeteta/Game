@@ -26,7 +26,7 @@ import com.garmadell.videoplayer.view.bean.Video;
 import java.util.List;
 
 /**
- * Created by alex on 10/21/17.
+ * Created by Michael Estrada on 10/21/17.
  */
 
 public class CursoFragment extends Fragment {

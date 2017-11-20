@@ -47,7 +47,7 @@ import com.google.android.exoplayer2.util.Util;
 import java.io.IOException;
 
 /**
- * Created by garmaDell on 8/10/2017.
+ * Created by Michael Estrada on 8/10/2017.
  */
 
 public class VideoActivity extends AppCompatActivity {

@@ -10,10 +10,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.garmadell.videoplayer.R;
+import com.garmadell.videoplayer.view.bean.Curso;
 import com.garmadell.videoplayer.view.bean.EstadoUsuario;
 import com.garmadell.videoplayer.view.bean.Pregunta;
 import com.garmadell.videoplayer.view.bean.UsuariosActivos;
 import com.garmadell.videoplayer.view.bean.Versus;
+import com.garmadell.videoplayer.view.bean.VersusCursos;
 import com.garmadell.videoplayer.view.fragment.UsuariosActivosFragment;
 import com.garmadell.videoplayer.view.services.CursoService;
 import com.garmadell.videoplayer.view.services.StudyService;
@@ -44,6 +46,7 @@ public class UsuariosActivosActivity extends AppCompatActivity {
     Integer idVersus = 0;
     Integer numeroJugador = 0;
     Boolean esMiTurno = false;
+    List<Integer> idsCursosSeleccionados = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class UsuariosActivosActivity extends AppCompatActivity {
             idUsuario = (Integer) getIntent().getExtras().getSerializable("idUsuario");
             idVersus = (Integer) getIntent().getExtras().getSerializable("idVersus");
             numeroJugador = (Integer) getIntent().getExtras().getSerializable("numeroJugador");
+            idsCursosSeleccionados = (List<Integer>) getIntent().getExtras().getSerializable("listadoCursosSeleccionados");
         }
 
         listaUsuariosActivos(idUsuario, idVersus, numeroJugador);
@@ -104,18 +108,97 @@ public class UsuariosActivosActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkedStatus = fragment.getmAdapter().getCheckedStatus();
-
-                //grabaVersusCurso(idUsuario, idVersus, numeroJugador);
-
+                grabaVersus();
                 Log.i("prueba onClick", "Continuar");
             }
         });
     }
 
-    private void grabaVersusCurso(final Integer idUsuario, final Integer idVersus, final Integer numeroJugador) {
+    private void grabaVersus() {
 
+        final Versus request = new Versus();
+
+        List<UsuariosActivos> listUsuariosActivos = fragment.getBeans();
+        Integer idOponente = 0;
+        for (int index = 0; index < checkedStatus.length; index++) {
+            if (checkedStatus[index]) {
+                idOponente =(listUsuariosActivos.get(index).getId_usuario());
+            }
+        }
+        request.setId_versus(0);
+        request.setId_jugador_primario(idUsuario);
+        request.setTurno_jugador_primario(true);
+        request.setId_jugador_secundario(idOponente);
+        request.setTurno_jugador_secundario(false);
+
+        Call<Versus> call = studyService.grabaVersus(request);
+
+        call.enqueue(new Callback<Versus>() {
+
+            @Override
+            public void onResponse(Call<Versus> call, Response<Versus> response) {
+                if (response.code() == 200) {
+
+                    idVersus = response.body().getId_versus();
+                    numeroJugador = (response.body().getId_jugador_primario()==idUsuario) ? 1 : 2;
+                    if(!idVersus.equals(0)){
+                        grabaVersusCurso(idUsuario);
+                    }
+
+
+                } else {
+                    Log.i("Else", "Else");
+                    Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Versus> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
+                Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
 
     }
+
+    private void grabaVersusCurso(final Integer idUsuario) {
+
+        List<VersusCursos> versusCursosList = new ArrayList<VersusCursos>();
+
+        for (int index = 0; index < idsCursosSeleccionados.size(); index++) {
+                VersusCursos newVersusCursos = new VersusCursos();
+                newVersusCursos.setId_versus(idVersus);
+                newVersusCursos.setId_curso(idsCursosSeleccionados.get(index));
+                versusCursosList.add(newVersusCursos);
+        }
+
+        Call<Boolean> call = studyService.grabaVersusCursos(versusCursosList);
+
+        call.enqueue(new Callback<Boolean>() {
+
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.code() == 200) {
+                    Boolean respuestaOk = response.body();
+                    //presentaPreguntas(idUsuario, idVersus, numeroJugador);
+
+                } else {
+                    Log.i("Else", "Else");
+                    Toast.makeText(getApplicationContext(), "Error al grabar versus", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
+                Toast.makeText(getApplicationContext(), "Error al grabar versus", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+           }
 
     private void buscaTurnoPrimerJugador() {
 
@@ -276,6 +359,8 @@ public class UsuariosActivosActivity extends AppCompatActivity {
             */
 
     }
+
+
 
     public void commitTransaction(FragmentTransaction transaction) {
         transaction.commit();

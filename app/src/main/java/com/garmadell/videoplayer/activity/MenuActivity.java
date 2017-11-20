@@ -16,6 +16,7 @@ import com.garmadell.videoplayer.R;
 import com.garmadell.videoplayer.view.bean.CambioEstadoUsuario;
 import com.garmadell.videoplayer.view.bean.Curso;
 import com.garmadell.videoplayer.view.bean.Dificultad;
+import com.garmadell.videoplayer.view.bean.EsperandoOponente;
 import com.garmadell.videoplayer.view.bean.Versus;
 import com.garmadell.videoplayer.view.services.CursoService;
 import com.garmadell.videoplayer.view.services.StudyService;
@@ -42,7 +43,6 @@ public class MenuActivity extends AppCompatActivity {
     private Button btnNewQuiz;
     private Button btnPerfil;
     private Button btnSugPregunta;
-    private Button btnRevPregunta;
     private Integer idUsuario;
     private Integer idVersus;
     private Integer numeroJugador;
@@ -60,7 +60,6 @@ public class MenuActivity extends AppCompatActivity {
         btnNewQuiz = (Button) findViewById(R.id.btnNewQuiz);
         btnPerfil = (Button) findViewById(R.id.btnPerfil);
         btnSugPregunta = (Button) findViewById(R.id.btnSugPregunta);
-        btnRevPregunta = (Button) findViewById(R.id.btnRevPregunta);
         swcEstado = (Switch) findViewById(R.id.swcEstado);
         //swcEstado.setOnCheckedChangeListener(this);
 
@@ -79,7 +78,7 @@ public class MenuActivity extends AppCompatActivity {
         btnNewQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buscaQuiz();
+                llamaListadoCursos();
             }
         });
 
@@ -95,13 +94,6 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //listadoCurso();
                 llamaSugerirPregunta();
-            }
-        });
-
-        btnRevPregunta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                llamaRevisarPregunta();
             }
         });
 
@@ -133,7 +125,7 @@ public class MenuActivity extends AppCompatActivity {
                     idVersus = response.body().getId_versus();
                     numeroJugador = (response.body().getId_jugador_primario()==idUsuario) ? 1 : 2;
 
-                    llamaListadoCursos();
+                    //llamaListadoCursos();
 
 /*                    if(request.getEstado_versus().equals(1)){
                         buscaOponente();
@@ -285,12 +277,6 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void llamaRevisarPregunta() {
-        Intent intent = new Intent(this, SugerirPreguntaActivity.class);
-        intent.putExtra("idUsuario", (Serializable) idUsuario);
-        startActivity(intent);
-    }
-
     private void cambioEstadoUsuario() {
 
         final CambioEstadoUsuario request = new CambioEstadoUsuario();
@@ -304,8 +290,53 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.code() == 200) {
+                    esperandoOponente();
+                    //Toast.makeText(getApplicationContext(), "Cambio Aplicado", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(getApplicationContext(), "Cambio Aplicado", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.i("Else", "Else");
+                    Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.i("onFailure", "onFailure");
+                Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+
+    }
+
+    private void esperandoOponente() {
+
+        final EsperandoOponente request = new EsperandoOponente();
+
+        request.setId_jugador_secundario(idUsuario);
+        request.setEstado_versus(1);
+
+
+        Call<Boolean> call = studyService.esperandoOponente(request);
+
+        call.enqueue(new Callback<Boolean>() {
+
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.code() == 200) {
+
+                    Boolean esperando = response.body();
+
+                    if(esperando){
+                        Toast.makeText(getApplicationContext(), "Listo para Jugar", Toast.LENGTH_SHORT).show();
+                    } else
+                    {
+                        if(swcEstado.isChecked()){
+                            esperandoOponente();
+                        }
+                    }
+
 
                 } else {
                     Log.i("Else", "Else");

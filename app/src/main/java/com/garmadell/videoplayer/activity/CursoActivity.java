@@ -108,7 +108,7 @@ public class CursoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkedStatus = fragment.getmAdapter().getCheckedStatus();
-                grabaVersusCurso(idUsuario, idVersus, numeroJugador);
+                //grabaVersusCurso(idUsuario, idVersus, numeroJugador);
                 llamaListadoUsuariosActivos();
                 Log.i("prueba onClick", "Continuar");
             }
@@ -142,7 +142,7 @@ public class CursoActivity extends AppCompatActivity {
 
                 } else {
                     Log.i("Else", "Else");
-                    Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error al grabar versus", Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
@@ -150,7 +150,7 @@ public class CursoActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
                 Log.i("onFailure", "onFailure");
-                Toast.makeText(getApplicationContext(), getResources().getString(error_rest), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error al grabar versus", Toast.LENGTH_LONG).show();
                 finish();
             }
         });
@@ -317,11 +317,23 @@ public class CursoActivity extends AppCompatActivity {
 
     }
 
+
     private void llamaListadoUsuariosActivos() {
+
+        List<Curso> listCursos = fragment.getBeans();
+
+        List<Integer> idsSeleccionados = new ArrayList<>();
+
+        for (int index = 0; index < checkedStatus.length; index++) {
+            if (checkedStatus[index]) {
+                idsSeleccionados.add(listCursos.get(index).getId_curso());
+            }
+        }
         Intent intent = new Intent(this, UsuariosActivosActivity.class);
         intent.putExtra("idUsuario", (Serializable) idUsuario);
         intent.putExtra("idVersus", (Serializable) idVersus);
         intent.putExtra("numeroJugador", (Serializable) numeroJugador);
+        intent.putExtra("listadoCursosSeleccionados", (Serializable) idsSeleccionados);
         startActivity(intent);
 
     }

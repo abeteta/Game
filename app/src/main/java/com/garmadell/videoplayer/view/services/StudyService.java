@@ -3,6 +3,7 @@ package com.garmadell.videoplayer.view.services;
 import com.garmadell.videoplayer.view.bean.CambioEstadoUsuario;
 import com.garmadell.videoplayer.view.bean.Curso;
 import com.garmadell.videoplayer.view.bean.Dificultad;
+import com.garmadell.videoplayer.view.bean.EsperandoOponente;
 import com.garmadell.videoplayer.view.bean.EstadoUsuario;
 import com.garmadell.videoplayer.view.bean.Perfil;
 import com.garmadell.videoplayer.view.bean.Pregunta;
@@ -68,6 +69,15 @@ public interface StudyService {
     ///
     @POST("/usuario/listadoUsuariosActivos")
     Call<List<UsuariosActivos>> listadoUsuariosActivos(@Body EstadoUsuario estadoUsuario);
+
+    ///
+    @POST("/versus/grabaQuiz")
+    Call<Versus> grabaVersus(@Body Versus versus);
+
+
+    ///
+    @POST("/versus/esperandoOponente")
+    Call<Boolean> esperandoOponente(@Body EsperandoOponente oponente);
 
 
     Retrofit retrofit = new Retrofit.Builder()

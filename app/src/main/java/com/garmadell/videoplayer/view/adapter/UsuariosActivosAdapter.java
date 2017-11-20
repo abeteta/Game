@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.garmadell.videoplayer.R;
@@ -99,7 +100,7 @@ public class UsuariosActivosAdapter extends RecyclerView.Adapter<UsuariosActivos
 
         protected TextView text_nombre;
         //protected ImageView imgPortada;
-        protected CheckBox check_usuario;
+        protected RadioButton check_usuario;
         //private ViewGroup parent;
         protected List<UsuariosActivos> items;
 
@@ -115,7 +116,7 @@ public class UsuariosActivosAdapter extends RecyclerView.Adapter<UsuariosActivos
             super(itemView);
             items = list;
             text_nombre = itemView.findViewById(R.id.text_nombre);
-            check_usuario = itemView.findViewById(R.id.check_usuario);
+            check_usuario = itemView.findViewById(R.id.rdb_oponente);
         }
 
         @Override

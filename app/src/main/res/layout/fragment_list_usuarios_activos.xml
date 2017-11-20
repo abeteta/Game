@@ -13,12 +13,24 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/check_usuario"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+        <RadioGroup
+            android:id="@+id/opciones_respuesta"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_below="@+id/opciones_respuesta"
+            >
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15sp"
+            android:layout_weight="0.06" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rdb_oponente"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_gravity="center"
             android:checked="false" />
+        </RadioGroup>
 
         <LinearLayout
             android:id="@+id/linearLayout"
